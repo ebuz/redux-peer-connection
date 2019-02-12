@@ -1,6 +1,6 @@
 {
-  "name": "redux-peer-connection",
-  "version": "0.1.6",
+  "name": "@ebuz/redux-peer-connection",
+  "version": "0.1.9",
   "description": "Some redux tooling around create peer to peer connections",
   "main": "lib/index.js",
   "repository": {
