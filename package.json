@@ -8,7 +8,7 @@
     "type": "git"
   },
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "build": "babel src -d lib",
     "test": "standard && npm run build && nyc ava tests/*.test.js"
   },
