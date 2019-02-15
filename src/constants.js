@@ -16,6 +16,6 @@ export default keymirror({
   PEER_REMOVE_TRACK: null,
   PEER_SET_CONSTRAINTS: null,
   ACCEPT_SIGNAL: null,
-  PEER_CLOSE: null
+  PEER_CLOSE: null,
   PEER_DESTROY: null
 })
