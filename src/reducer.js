@@ -4,6 +4,7 @@ import webrtcConstants from './constants'
 import local from './local-store'
 
 export function isInitialized (state = false, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return false
   if (action.type === webrtcConstants.INIT_WEBRTC) {
     return true
   }
@@ -11,21 +12,25 @@ export function isInitialized (state = false, action) {
 }
 
 export function _peer (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
   if (action.type !== webrtcConstants.WEBRTC_CREATED) return state
   return action.webrtc
 }
 
 export function channel (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
   if (action.type !== webrtcConstants.INIT_WEBRTC) return state
   return action.webRTCOptions.channelName
 }
 
 export function isConnected (state = false, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY || action.type === webrtcConstants.PEER_CLOSE) return false
   if (action.type !== webrtcConstants.PEER_CONNECTED) return state
   return action.isConnected
 }
 
 export function offer (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
   if (
     action.type !== webrtcConstants.PEER_SIGNAL ||
     action.signal.type !== 'offer'
@@ -34,6 +39,7 @@ export function offer (state = null, action) {
 }
 
 export function answer (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
   if (
     action.type !== webrtcConstants.PEER_SIGNAL ||
     action.signal.type !== 'answer'
@@ -42,11 +48,13 @@ export function answer (state = null, action) {
 }
 
 export function data (state = [], action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return []
   if (action.type !== webrtcConstants.PEER_DATA) return state
   return [...state, action.data.toString()]
 }
 
 export function stream (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY || action.type === webrtcConstants.PEER_CLOSE) return null
   if (action.type !== webrtcConstants.PEER_STREAM) return state
   return action.stream
 }

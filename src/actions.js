@@ -6,6 +6,20 @@ export const createPeer = webRTCOptions => ({
   webRTCOptions
 })
 
+export const closePeer = () => ({
+  type: webrtcConstants.PEER_CLOSE
+})
+
+export const destroyPeer = (error = null) => ({
+  type: webrtcConstants.PEER_DESTROY,
+  error
+})
+
+export const setConstraints = constraints => ({
+  type: webrtcConstants.PEER_SET_CONSTRAINTS,
+  constraint
+})
+
 export const createWebRTC = webrtc => ({
   type: webrtcConstants.WEBRTC_CREATED,
   webrtc
@@ -57,3 +71,21 @@ export const isAcceptingSignal = ({ type }) =>
 
 export const isSendingData = ({ type }) =>
   type === webrtcConstants.PEER_SEND_DATA
+
+export const isDestroyPeer = ({ type }) =>
+  type === webrtcConstants.PEER_DESTROY
+
+export const isSetConstraints = ({ type }) =>
+  type === webrtcConstants.PEER_SET_CONSTRAINTS
+
+export const isAddStream = ({ type }) =>
+  type === webrtcConstants.PEER_ADD_STREAM
+
+export const isRemoveStream = ({ type }) =>
+  type === webrtcConstants.PEER_REMOVE_STREAM
+
+export const isAddTrack = ({ type }) =>
+  type === webrtcConstants.PEER_ADD_TRACK
+
+export const isRemoveTrack = ({ type }) =>
+  type === webrtcConstants.PEER_REMOVE_TRACK

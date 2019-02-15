@@ -8,8 +8,11 @@ import {
   peerConnected,
   peerData,
   peerStream,
+  closePeer,
   isAcceptingSignal,
-  isSendingData
+  isSendingData,
+  isDestroyPeer,
+  isSetConstraints,
 } from './actions'
 import local from './local-store'
 
@@ -28,6 +31,8 @@ export function createPeer (dispatch, webRTCOptions, Peer) {
   peer.on('connect', () => dispatch(peerConnected(true)))
   peer.on('data', data => dispatch(peerData(data)))
   peer.on('stream', stream => dispatch(peerStream(stream)))
+  peer.on('close', () => dispatch(closePeer()))
+  // peer.on('track', (track, stream) => dispatch(peerTrack(track, stream)))
   dispatch(createWebRTC(peer))
 }
 
@@ -41,6 +46,16 @@ export function sendData (data, peer) {
   peer.send(data)
 }
 
+export function destroyPeer (error, peer) {
+  if (!peer) throw noPeerError('destroyPeer')
+  peer.destroy(error)
+}
+
+export function setConstraints (constraints, peer) {
+  if (!peer) throw noPeerError('setConstraints')
+  peer.setConstraints(error)
+}
+
 export const middleware = store => next => action => {
   next(action)
   if (isCreatingPeer(action) && !getPeer(store)) {
@@ -51,5 +66,11 @@ export const middleware = store => next => action => {
   }
   if (isSendingData(action)) {
     return sendData(action.data, getPeer(store))
+  }
+  if (isDestroyPeer(action)) {
+    return destroyPeer(action.error, getPeer(store))
+  }
+  if (isSetConstraints(action)) {
+    return setConstraints(action.constraints, getPeer(store))
   }
 }
