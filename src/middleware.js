@@ -47,8 +47,7 @@ export function sendData (data, peer) {
 }
 
 export function destroyPeer (error, peer) {
-  if (!peer) throw noPeerError('destroyPeer')
-  peer.destroy(error)
+  if (peer) peer.destroy(error)
 }
 
 export function setConstraints (constraints, peer) {
