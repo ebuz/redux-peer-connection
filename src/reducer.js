@@ -47,6 +47,17 @@ export function answer (state = null, action) {
   return action.signal
 }
 
+export function signal (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
+  if (action.type === webrtcConstants.PEER_SIGNAL) {
+      if(state){
+          return [...state, action.signal]
+      }
+      return [action.signal]
+  }
+  return state
+}
+
 export function data (state = [], action) {
   if (action.type === webrtcConstants.PEER_DESTROY) return []
   if (action.type !== webrtcConstants.PEER_DATA) return state
@@ -57,6 +68,12 @@ export function stream (state = null, action) {
   if (action.type === webrtcConstants.PEER_DESTROY || action.type === webrtcConstants.PEER_CLOSE) return null
   if (action.type !== webrtcConstants.PEER_STREAM) return state
   return action.stream
+}
+
+export function error (state = null, action) {
+  if (action.type === webrtcConstants.PEER_DESTROY) return null
+  if (action.type !== webrtcConstants.PEER_ERROR) return state
+  return action.error
 }
 
 export const createReducer = (keyName) => {
@@ -70,7 +87,9 @@ export const createReducer = (keyName) => {
     isInitialized,
     offer,
     answer,
+    signal,
     data,
-    stream
+    stream,
+    error
   })
 }
