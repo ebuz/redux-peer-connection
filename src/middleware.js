@@ -20,6 +20,10 @@ export function noPeerError (method) {
   return new Error(`Cannot call ${method} before a peer is created. See method action "createPeer"`)
 }
 
+export function closedPeerError (method) {
+  return new Error(`Cannot call ${method} on a closed or destroyed peer`)
+}
+
 export function getPeer (store) {
   return store.getState()[local.keyName]._peer
 }
@@ -43,6 +47,7 @@ export function acceptOffer (offer, peer) {
 
 export function sendData (data, peer) {
   if (!peer) throw noPeerError('sendData')
+  if (!peer.connected || peer.destroyed) throw closedPeerError('sendData')
   peer.send(data)
 }
 
@@ -52,7 +57,8 @@ export function destroyPeer (error, peer) {
 
 export function setConstraints (constraints, peer) {
   if (!peer) throw noPeerError('setConstraints')
-  peer.setConstraints(error)
+  if (!peer.connected || peer.destroyed) throw closedPeerError('setConstraints')
+  peer.setConstraints(constraints)
 }
 
 export const middleware = store => next => action => {
